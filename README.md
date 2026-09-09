@@ -17,24 +17,6 @@ Think of it as a **file manager, but for your system state**.
 - **Blazing Fast** -- Pure Rust, single binary, queries pacman live with zero persistent storage
 - **Adaptive Theme** -- Respects your terminal colors with a clean, minimal aesthetic
 
-## Layout
-
-```
-+------------------------------------------------------------------+
-|  GLARE   1:All  2:Explicit  3:Deps  4:AUR  5:Orphans  6:Recent  |
-+----------------------------+-------------------------------------+
-| > thunar         4.18.8   |  thunar 4.18.8-1                    |
-|   firefox        128.0    |  Modern file manager for Xfce       |
-|   quickshell-git r123     |                                     |
-|   linux          6.9.1    |  Install Date: Mon 01 Jan 2024...   |
-|   paru       AUR 2.0.3   |  Reason:       Explicitly installed  |
-|   ...                     |  Source:       Official              |
-|                           |  Size:         5.86 MiB             |
-|                           |                                     |
-|                           |   Info   Files   Deps               |
-+----------------------------+-------------------------------------+
-|  jk Navigate  Tab Switch pane  / Search  1-7 Filter  d Dashboard |
-+------------------------------------------------------------------+
 ```
 
 ## Installation
