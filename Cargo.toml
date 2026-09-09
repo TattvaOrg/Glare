@@ -1,0 +1,23 @@
+[package]
+name = "glare"
+version = "0.1.0"
+edition = "2021"
+description = "A lightweight system state manager TUI for Arch Linux"
+license = "GPL-3.0"
+readme = "README.md"
+keywords = ["arch", "linux", "pacman", "tui", "system"]
+categories = ["command-line-utilities"]
+
+[dependencies]
+ratatui = "0.29"
+crossterm = "0.28"
+serde = { version = "1", features = ["derive"] }
+toml = "0.8"
+dirs = "6"
+anyhow = "1"
+
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
+strip = true
