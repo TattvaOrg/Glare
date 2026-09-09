@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-REPO="https://github.com/AbsolOrg/Glare.git"
+REPO="https://github.com/TattvaOrg/Glare.git"
 INSTALL_DIR="/usr/local/bin"
 TMP_DIR=$(mktemp -d)
 
