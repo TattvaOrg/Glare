@@ -24,13 +24,13 @@ Think of it as a **file manager, but for your system state**.
 ### One-Liner
 
 ```bash
-curl -sL https://raw.githubusercontent.com/AbsolOrg/Glare/main/install.sh | bash
+curl -sL https://raw.githubusercontent.com/TattvaOrg/Glare/main/install.sh | bash
 ```
 
 ### From Source
 
 ```bash
-git clone https://github.com/AbsolOrg/Glare.git
+git clone https://github.com/TattvaOrg/Glare.git
 cd Glare
 cargo build --release
 sudo install -Dm755 target/release/glare /usr/local/bin/glare
