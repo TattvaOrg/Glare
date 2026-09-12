@@ -1,22 +1,22 @@
-pub mod theme;
-pub mod header;
-pub mod footer;
-pub mod package_list;
-pub mod detail;
 pub mod dashboard;
+pub mod detail;
+pub mod footer;
+pub mod header;
+pub mod package_list;
+pub mod theme;
 
 use crate::app::App;
-use ratatui::Frame;
 use ratatui::layout::{Constraint, Direction, Layout};
+use ratatui::Frame;
 
 pub fn render(frame: &mut Frame, app: &mut App) {
     if app.show_dashboard {
         let chunks = Layout::default()
             .direction(Direction::Vertical)
             .constraints([
-                Constraint::Length(3),  // header
-                Constraint::Min(0),     // dashboard
-                Constraint::Length(1),  // footer
+                Constraint::Length(3), // header
+                Constraint::Min(0),    // dashboard
+                Constraint::Length(1), // footer
             ])
             .split(frame.area());
 
@@ -27,9 +27,9 @@ pub fn render(frame: &mut Frame, app: &mut App) {
         let chunks = Layout::default()
             .direction(Direction::Vertical)
             .constraints([
-                Constraint::Length(3),  // header
-                Constraint::Min(0),     // main content
-                Constraint::Length(1),  // footer
+                Constraint::Length(3), // header
+                Constraint::Min(0),    // main content
+                Constraint::Length(1), // footer
             ])
             .split(frame.area());
 
@@ -39,8 +39,8 @@ pub fn render(frame: &mut Frame, app: &mut App) {
         let main_chunks = Layout::default()
             .direction(Direction::Horizontal)
             .constraints([
-                Constraint::Percentage(35),  // package list
-                Constraint::Percentage(65),  // detail panel
+                Constraint::Percentage(35), // package list
+                Constraint::Percentage(65), // detail panel
             ])
             .split(chunks[1]);
 

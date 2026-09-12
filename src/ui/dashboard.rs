@@ -1,11 +1,11 @@
+use super::theme::get_theme;
 use crate::app::App;
 use crate::package::format_bytes;
-use super::theme::get_theme;
-use ratatui::Frame;
 use ratatui::layout::{Constraint, Direction, Layout, Rect};
 use ratatui::style::{Color, Style};
 use ratatui::text::{Line, Span};
 use ratatui::widgets::{Block, Borders, Paragraph, Wrap};
+use ratatui::Frame;
 
 pub fn render_dashboard(frame: &mut Frame, area: Rect, app: &App) {
     let theme = get_theme();

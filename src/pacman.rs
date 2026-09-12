@@ -1,13 +1,11 @@
-use crate::package::{Package, InstallReason, PackageSource, parse_size_to_bytes};
+use crate::package::{parse_size_to_bytes, InstallReason, Package, PackageSource};
 use anyhow::Result;
 use std::collections::HashSet;
 use std::process::Command;
 
 /// Load all installed packages by running `pacman -Qi`
 pub fn load_all_packages() -> Result<Vec<Package>> {
-    let output = Command::new("pacman")
-        .args(["-Qi"])
-        .output()?;
+    let output = Command::new("pacman").args(["-Qi"]).output()?;
     let stdout = String::from_utf8_lossy(&output.stdout);
     let packages = parse_qi_output(&stdout);
     Ok(packages)
@@ -15,9 +13,7 @@ pub fn load_all_packages() -> Result<Vec<Package>> {
 
 /// Get names of AUR/foreign packages via `pacman -Qm`
 pub fn load_aur_names() -> Result<HashSet<String>> {
-    let output = Command::new("pacman")
-        .args(["-Qm"])
-        .output()?;
+    let output = Command::new("pacman").args(["-Qm"]).output()?;
     let stdout = String::from_utf8_lossy(&output.stdout);
     let names: HashSet<String> = stdout
         .lines()
@@ -29,9 +25,7 @@ pub fn load_aur_names() -> Result<HashSet<String>> {
 
 /// Get names of orphan packages via `pacman -Qdt`
 pub fn load_orphan_names() -> Result<HashSet<String>> {
-    let output = Command::new("pacman")
-        .args(["-Qdtq"])
-        .output()?;
+    let output = Command::new("pacman").args(["-Qdtq"]).output()?;
     let stdout = String::from_utf8_lossy(&output.stdout);
     let names: HashSet<String> = stdout
         .lines()
@@ -43,9 +37,7 @@ pub fn load_orphan_names() -> Result<HashSet<String>> {
 
 /// Load files for a specific package via `pacman -Ql <name>`
 pub fn load_package_files(name: &str) -> Result<Vec<String>> {
-    let output = Command::new("pacman")
-        .args(["-Ql", name])
-        .output()?;
+    let output = Command::new("pacman").args(["-Ql", name]).output()?;
     let stdout = String::from_utf8_lossy(&output.stdout);
     let files: Vec<String> = stdout
         .lines()
@@ -132,9 +124,7 @@ fn build_package(fields: &[(String, String)]) -> Option<Package> {
         if val.is_empty() || val == "None" {
             Vec::new()
         } else {
-            val.split_whitespace()
-                .map(|s| s.to_string())
-                .collect()
+            val.split_whitespace().map(|s| s.to_string()).collect()
         }
     };
 
@@ -170,7 +160,8 @@ fn build_package(fields: &[(String, String)]) -> Option<Package> {
     let install_reason_str = get("Install Reason");
     let install_reason = if install_reason_str.contains("Explicitly") {
         InstallReason::Explicit
-    } else if install_reason_str.contains("dependency") || install_reason_str.contains("Dependency") {
+    } else if install_reason_str.contains("dependency") || install_reason_str.contains("Dependency")
+    {
         InstallReason::Dependency
     } else {
         InstallReason::Unknown
@@ -199,6 +190,6 @@ fn build_package(fields: &[(String, String)]) -> Option<Package> {
         install_reason,
         validated_by: get("Validated By"),
         source: PackageSource::Official, // will be overridden
-        is_orphan: false,                 // will be overridden
+        is_orphan: false,                // will be overridden
     })
 }

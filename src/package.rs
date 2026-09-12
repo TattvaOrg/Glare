@@ -18,6 +18,7 @@ impl fmt::Display for InstallReason {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
+#[allow(clippy::upper_case_acronyms)]
 pub enum PackageSource {
     Official,
     AUR,
@@ -48,12 +49,13 @@ pub struct Package {
     pub optional_for: Vec<String>,
     pub conflicts: Vec<String>,
     pub replaces: Vec<String>,
-    pub installed_size: String,       // raw string like "5.86 MiB"
-    pub installed_size_bytes: u64,    // parsed to bytes for sorting
+    pub installed_size: String,    // raw string like "5.86 MiB"
+    pub installed_size_bytes: u64, // parsed to bytes for sorting
     pub packager: String,
     pub build_date: String,
     pub install_date: String,
     pub install_reason: InstallReason,
+    #[allow(dead_code)]
     pub validated_by: String,
     pub source: PackageSource,
     pub is_orphan: bool,
@@ -62,13 +64,14 @@ pub struct Package {
 #[derive(Debug, Clone)]
 pub struct FileGroup {
     pub category: String,
+    #[allow(dead_code)]
     pub base_path: String,
     pub files: Vec<String>,
 }
 
 /// Parse a size string like "5.86 MiB" or "123.45 KiB" to bytes
 pub fn parse_size_to_bytes(size_str: &str) -> u64 {
-    let parts: Vec<&str> = size_str.trim().split_whitespace().collect();
+    let parts: Vec<&str> = size_str.split_whitespace().collect();
     if parts.len() != 2 {
         return 0;
     }
@@ -132,7 +135,11 @@ pub fn group_files(files: Vec<String>) -> Vec<FileGroup> {
 }
 
 fn categorize_path(path: &str) -> (u8, String, String) {
-    if path.starts_with("/usr/bin/") || path.starts_with("/usr/sbin/") || path.starts_with("/bin/") || path.starts_with("/sbin/") {
+    if path.starts_with("/usr/bin/")
+        || path.starts_with("/usr/sbin/")
+        || path.starts_with("/bin/")
+        || path.starts_with("/sbin/")
+    {
         (0, "Binaries".to_string(), "/usr/bin/".to_string())
     } else if path.starts_with("/usr/lib/") || path.starts_with("/lib/") {
         (1, "Libraries".to_string(), "/usr/lib/".to_string())
@@ -141,9 +148,17 @@ fn categorize_path(path: &str) -> (u8, String, String) {
     } else if path.starts_with("/usr/share/man/") {
         (3, "Man Pages".to_string(), "/usr/share/man/".to_string())
     } else if path.starts_with("/usr/share/doc/") {
-        (4, "Documentation".to_string(), "/usr/share/doc/".to_string())
+        (
+            4,
+            "Documentation".to_string(),
+            "/usr/share/doc/".to_string(),
+        )
     } else if path.starts_with("/usr/share/licenses/") {
-        (5, "Licenses".to_string(), "/usr/share/licenses/".to_string())
+        (
+            5,
+            "Licenses".to_string(),
+            "/usr/share/licenses/".to_string(),
+        )
     } else if path.starts_with("/usr/share/") {
         (6, "Data & Resources".to_string(), "/usr/share/".to_string())
     } else if path.starts_with("/etc/") {
