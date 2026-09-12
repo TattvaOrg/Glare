@@ -1,15 +1,17 @@
-use crate::app::App;
 use super::theme::get_theme;
-use ratatui::Frame;
+use crate::app::App;
 use ratatui::layout::Rect;
-use ratatui::widgets::Paragraph;
+use ratatui::style::{Color, Modifier, Style};
 use ratatui::text::{Line, Span};
-use ratatui::style::{Style, Color, Modifier};
+use ratatui::widgets::Paragraph;
+use ratatui::Frame;
 
 pub fn render_footer(frame: &mut Frame, area: Rect, app: &App) {
     let theme = get_theme();
 
-    let key_style = Style::default().fg(Color::Cyan).add_modifier(Modifier::BOLD);
+    let key_style = Style::default()
+        .fg(Color::Cyan)
+        .add_modifier(Modifier::BOLD);
     let desc_style = theme.footer;
 
     let spans = if app.show_dashboard {

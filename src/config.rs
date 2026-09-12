@@ -2,6 +2,7 @@ use serde::Deserialize;
 use std::path::PathBuf;
 
 #[derive(Debug, Deserialize, Clone)]
+#[allow(dead_code)]
 pub struct Config {
     #[serde(default = "default_aur_helper")]
     pub aur_helper: String,
@@ -11,14 +12,17 @@ pub struct Config {
     pub default_sort: String,
 }
 
+#[allow(dead_code)]
 fn default_aur_helper() -> String {
     "paru".to_string()
 }
 
+#[allow(dead_code)]
 fn default_filter() -> String {
     "all".to_string()
 }
 
+#[allow(dead_code)]
 fn default_sort() -> String {
     "name".to_string()
 }
@@ -38,12 +42,10 @@ impl Default for Config {
 pub fn load_config() -> Config {
     let config_path = get_config_path();
     if config_path.exists() {
-        match std::fs::read_to_string(&config_path) {
-            Ok(content) => match toml::from_str(&content) {
-                Ok(config) => return config,
-                Err(_) => {}
-            },
-            Err(_) => {}
+        if let Ok(content) = std::fs::read_to_string(&config_path) {
+            if let Ok(config) = toml::from_str(&content) {
+                return config;
+            }
         }
     }
     Config::default()

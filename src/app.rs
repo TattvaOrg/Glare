@@ -1,5 +1,5 @@
 use crate::config::Config;
-use crate::package::{FileGroup, Package, PackageSource, InstallReason, group_files};
+use crate::package::{group_files, FileGroup, InstallReason, Package, PackageSource};
 use crate::pacman;
 use anyhow::Result;
 use crossterm::event::{KeyCode, KeyEvent, KeyModifiers};
@@ -8,6 +8,7 @@ use std::collections::{HashMap, HashSet};
 use std::fmt;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[allow(clippy::upper_case_acronyms)]
 pub enum FilterCategory {
     All,
     Explicit,
@@ -123,6 +124,7 @@ pub struct App {
     pub aur_names: HashSet<String>,
     pub cached_files: HashMap<String, Vec<FileGroup>>,
     pub total_installed_size: u64,
+    #[allow(dead_code)]
     pub config: Config,
 }
 
@@ -144,7 +146,7 @@ impl App {
         }
 
         // Sort by name initially
-        packages.sort_by(|a, b| a.name.to_lowercase().cmp(&b.name.to_lowercase()));
+        packages.sort_by_key(|a| a.name.to_lowercase());
 
         let total_installed_size: u64 = packages.iter().map(|p| p.installed_size_bytes).sum();
         let filtered_indices: Vec<usize> = (0..packages.len()).collect();
@@ -354,10 +356,12 @@ impl App {
     pub fn load_files_for_selected(&mut self) {
         if let Some(pkg) = self.selected_package() {
             let name = pkg.name.clone();
-            if !self.cached_files.contains_key(&name) {
+            if let std::collections::hash_map::Entry::Vacant(e) =
+                self.cached_files.entry(name.clone())
+            {
                 if let Ok(files) = pacman::load_package_files(&name) {
                     let grouped = group_files(files);
-                    self.cached_files.insert(name, grouped);
+                    e.insert(grouped);
                 }
             }
         }
@@ -393,7 +397,8 @@ impl App {
 
     fn move_to_end(&mut self) {
         if !self.filtered_indices.is_empty() {
-            self.list_state.select(Some(self.filtered_indices.len() - 1));
+            self.list_state
+                .select(Some(self.filtered_indices.len() - 1));
             self.detail_scroll = 0;
         }
     }
@@ -404,11 +409,17 @@ impl App {
     }
 
     pub fn explicit_count(&self) -> usize {
-        self.packages.iter().filter(|p| p.install_reason == InstallReason::Explicit).count()
+        self.packages
+            .iter()
+            .filter(|p| p.install_reason == InstallReason::Explicit)
+            .count()
     }
 
     pub fn dependency_count(&self) -> usize {
-        self.packages.iter().filter(|p| p.install_reason == InstallReason::Dependency).count()
+        self.packages
+            .iter()
+            .filter(|p| p.install_reason == InstallReason::Dependency)
+            .count()
     }
 
     pub fn aur_count(&self) -> usize {
@@ -421,7 +432,15 @@ impl App {
 
     pub fn top_largest(&self, n: usize) -> Vec<&Package> {
         let mut indices: Vec<usize> = (0..self.packages.len()).collect();
-        indices.sort_by(|&a, &b| self.packages[b].installed_size_bytes.cmp(&self.packages[a].installed_size_bytes));
-        indices.into_iter().take(n).map(|i| &self.packages[i]).collect()
+        indices.sort_by(|&a, &b| {
+            self.packages[b]
+                .installed_size_bytes
+                .cmp(&self.packages[a].installed_size_bytes)
+        });
+        indices
+            .into_iter()
+            .take(n)
+            .map(|i| &self.packages[i])
+            .collect()
     }
 }

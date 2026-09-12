@@ -16,31 +16,43 @@ Think of it as a **file manager, but for your system state**.
 - **Dashboard** -- Overview with package stats, disk usage breakdown, and top 10 largest packages with bar chart
 - **Blazing Fast** -- Pure Rust, single binary, queries pacman live with zero persistent storage
 - **Adaptive Theme** -- Respects your terminal colors with a clean, minimal aesthetic
-
-```
-
 ## Installation
 
-### One-Liner
+Install Glare via the one-liner script (fetches the prebuilt binary directly to `~/.local/bin`, no `sudo` required):
 
-```bash
-curl -sL https://raw.githubusercontent.com/TattvaOrg/Glare/main/install.sh | bash
+```sh
+curl -sSL https://raw.githubusercontent.com/TattvaOrg/Glare/main/install.sh | bash
 ```
 
-### From Source
+## Updating
 
-```bash
+Update Glare to the latest release at any time:
+
+```sh
+glare update
+```
+
+Or re-run the installer:
+
+```sh
+curl -sSL https://raw.githubusercontent.com/TattvaOrg/Glare/main/install.sh | bash
+```
+
+## Build from Source
+
+```sh
 git clone https://github.com/TattvaOrg/Glare.git
 cd Glare
 cargo build --release
-sudo install -Dm755 target/release/glare /usr/local/bin/glare
+install -Dm755 target/release/glare ~/.local/bin/glare
 ```
 
 ### Requirements
 
 - Arch Linux (or Arch-based: CachyOS, EndeavourOS, Manjaro, etc.)
-- `pacman` (comes with Arch)
-- Rust toolchain (for building from source)
+- `pacman` (standard on Arch Linux)
+- `curl` (for prebuilt installer)
+- Rust toolchain (only if compiling from source)
 
 ## Usage
 

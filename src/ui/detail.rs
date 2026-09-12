@@ -1,10 +1,10 @@
-use crate::app::{ActivePane, App, DetailTab};
 use super::theme::get_theme;
-use ratatui::Frame;
+use crate::app::{ActivePane, App, DetailTab};
 use ratatui::layout::{Constraint, Direction, Layout, Rect};
 use ratatui::style::{Color, Modifier, Style};
 use ratatui::text::{Line, Span, Text};
 use ratatui::widgets::{Block, Borders, Paragraph, Wrap};
+use ratatui::Frame;
 
 pub fn render_detail(frame: &mut Frame, area: Rect, app: &App) {
     let theme = get_theme();
@@ -83,10 +83,7 @@ fn render_tab_bar(
                     .add_modifier(Modifier::BOLD),
             ));
         } else {
-            spans.push(Span::styled(
-                label,
-                Style::default().fg(Color::DarkGray),
-            ));
+            spans.push(Span::styled(label, Style::default().fg(Color::DarkGray)));
         }
         spans.push(Span::raw(" "));
     }
@@ -125,7 +122,9 @@ fn build_info_lines<'a>(
     lines.push(Line::from(vec![
         Span::styled(
             &pkg.name,
-            Style::default().fg(Color::Cyan).add_modifier(Modifier::BOLD),
+            Style::default()
+                .fg(Color::Cyan)
+                .add_modifier(Modifier::BOLD),
         ),
         Span::raw(" "),
         Span::styled(&pkg.version, Style::default().fg(Color::White)),
@@ -208,11 +207,7 @@ fn build_files_lines<'a>(app: &'a App, theme: &super::theme::Theme) -> Vec<Line<
             } else {
                 for group in groups {
                     // Category header
-                    let header = format!(
-                        "▸ {} ({} files)",
-                        group.category,
-                        group.files.len()
-                    );
+                    let header = format!("▸ {} ({} files)", group.category, group.files.len());
                     lines.push(Line::from(Span::styled(header, theme.category_header)));
 
                     // File paths

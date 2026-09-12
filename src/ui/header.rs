@@ -1,16 +1,22 @@
-use crate::app::{App, FilterCategory};
 use super::theme::get_theme;
-use ratatui::Frame;
+use crate::app::{App, FilterCategory};
 use ratatui::layout::Rect;
-use ratatui::widgets::{Block, Borders, Paragraph};
+use ratatui::style::{Color, Modifier, Style};
 use ratatui::text::{Line, Span};
-use ratatui::style::{Style, Color, Modifier};
+use ratatui::widgets::{Block, Borders, Paragraph};
+use ratatui::Frame;
 
 pub fn render_header(frame: &mut Frame, area: Rect, app: &App) {
     let theme = get_theme();
 
     let mut spans = vec![
-        Span::styled(" GLARE ", Style::default().fg(Color::Black).bg(Color::Cyan).add_modifier(Modifier::BOLD)),
+        Span::styled(
+            " GLARE ",
+            Style::default()
+                .fg(Color::Black)
+                .bg(Color::Cyan)
+                .add_modifier(Modifier::BOLD),
+        ),
         Span::raw("  "),
     ];
 
@@ -33,7 +39,10 @@ pub fn render_header(frame: &mut Frame, area: Rect, app: &App) {
         spans.push(Span::styled("█", Style::default().fg(Color::Yellow))); // cursor
     } else if !app.search_query.is_empty() {
         spans.push(Span::raw("  "));
-        spans.push(Span::styled(format!("filter: {}", &app.search_query), Style::default().fg(Color::Yellow)));
+        spans.push(Span::styled(
+            format!("filter: {}", app.search_query),
+            Style::default().fg(Color::Yellow),
+        ));
     }
 
     let line = Line::from(spans);

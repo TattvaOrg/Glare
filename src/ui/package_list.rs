@@ -1,11 +1,11 @@
-use crate::app::{App, ActivePane};
-use crate::package::PackageSource;
 use super::theme::get_theme;
-use ratatui::Frame;
+use crate::app::{ActivePane, App};
+use crate::package::PackageSource;
 use ratatui::layout::Rect;
-use ratatui::widgets::{Block, Borders, List, ListItem};
+use ratatui::style::{Modifier, Style};
 use ratatui::text::{Line, Span};
-use ratatui::style::{Style, Modifier};
+use ratatui::widgets::{Block, Borders, List, ListItem};
+use ratatui::Frame;
 
 pub fn render_package_list(frame: &mut Frame, area: Rect, app: &mut App) {
     let theme = get_theme();
